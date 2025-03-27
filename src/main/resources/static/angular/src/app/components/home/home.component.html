@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="header">
+    <h1>NIISe Profile Management</h1>
+    <button mat-raised-button color="primary" (click)="showCreateForm = true">
+      Create New Profile
+    </button>
+  </div>
+
+  <!-- Create Profile Form -->
+  <div class="create-form" *ngIf="showCreateForm">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Create New Profile</mat-card-title>
+        <button mat-icon-button (click)="showCreateForm = false">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <form (ngSubmit)="createProfile()">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="newProfile.name" name="name" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="newProfile.email" name="email" type="email" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Age</mat-label>
+            <input matInput [(ngModel)]="newProfile.age" name="age" type="number" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [(ngModel)]="newProfile.password" name="password" type="password" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <textarea matInput [(ngModel)]="newProfile.address" name="address" required></textarea>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-button type="button" (click)="showCreateForm = false">Cancel</button>
+            <button mat-raised-button color="primary" type="submit">Create Profile</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Profiles List -->
+  <div class="profiles-grid">
+    <mat-card *ngFor="let profile of profiles" class="profile-card">
+      <mat-card-header>
+        <mat-card-title>{{ profile.name }}</mat-card-title>
+        <button mat-icon-button (click)="generateQRCode(profile)">
+          <mat-icon>qr_code</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="profile-info">
+          <p><strong>Email:</strong> {{ profile.email }}</p>
+          <p><strong>Age:</strong> {{ profile.age }}</p>
+          <p><strong>Address:</strong> {{ profile.address }}</p>
+          <p><strong>Created:</strong> {{ profile.createdAt | date }}</p>
+        </div>
+        <div class="qr-code" *ngIf="profile.qrCodePath">
+          <img [src]="profile.qrCodePath" alt="QR Code">
+          <p>Scan this QR code to view encrypted information</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 
